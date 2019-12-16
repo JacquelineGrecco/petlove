@@ -1,0 +1,5 @@
+#Intellij folder
+.idea/
+
+#Spark folder
+spark-warehouse/
