@@ -7,8 +7,8 @@ def SparkConfig() -> object:
         .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer") \
         .config("spark.kryoserializer.buffer", "512k") \
         .config("spark.kryoserializer.buffer.max", "512m") \
-        .config("spark.sql.parquet.filterPushdown", "true") \
-        .config("spark.sql.parquet.mergeSchema", "false") \
+        .config("spark.scripts_sql.parquet.filterPushdown", "true") \
+        .config("spark.scripts_sql.parquet.mergeSchema", "false") \
         .config("spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version", "2") \
         .config("spark.speculation", "false") \
         .config("spark.network.timeout", "10000000") \

@@ -1,5 +1,17 @@
+*.class
+*.log
+*.jar
+*.iml
+
 #Intellij folder
 .idea/
 
 #Spark folder
 spark-warehouse/
+
+#Jars
+jars/
+
+#env
+venv/
+_pycache_/

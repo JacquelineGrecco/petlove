@@ -2,10 +2,11 @@ import pandas as pd
 
 from utils.SparkConfig import SparkConfig
 
-spark = SparkConfig()
 
 
 def ingestion_postgres(path_txt, path_parquet, path_csv, path_json, postgres_user, postgres_pass, postgres_url):
+
+    spark = SparkConfig()
     mode = "overwrite"
     properties = {"user": postgres_user, "password": postgres_pass, "driver": "org.postgresql.Driver"}
 
@@ -18,23 +19,23 @@ def ingestion_postgres(path_txt, path_parquet, path_csv, path_json, postgres_use
 
     csv_base = spark.read.option("header", "true").option("delimiter", "|").csv(path_csv)
     csv_base = csv_base.withColumn("custo_frete", csv_base["custo_frete"].cast("double"))
-    csv_base.write.jdbc(url=url, table="tb_frete", mode=mode, properties=properties)
+    csv_base.write.jdbc(url=postgres_url, table="tb_frete", mode=mode, properties=properties)
 
     json_base = pd.read_json(path_json)
     json_base = spark.createDataFrame(json_base)
     json_base = json_base.withColumn("sku", json_base["sku"].cast('string'))
-    json_base.write.jdbc(url=url, table="tb_familia_setor", mode=mode, properties=properties)
+    json_base.write.jdbc(url=postgres_url, table="tb_familia_setor", mode=mode, properties=properties)
 
 
 if __name__ == '__main__':
 
-    path_txt = '/petlove/files/json/peso_unitario_new.txt'
-    path_json = '/petlove/files/json/familiasetor.json'
-    path_csv = '/petlove/files/csv/frete.csv'
-    path_parquet = '/petlove/files/parquet/faturamento.parquet.gzip'
+    path_txt = '/petlove/files/read/txt/peso_unitario_new.txt'
+    path_json = '/petlove/files/read/json/familiasetor.json'
+    path_csv = '/petlove/files/read/csv/frete.csv'
+    path_parquet = '/petlove/files/read/parquet/faturamento.parquet.gzip'
 
-    postgres_user = 'postgres'
+    postgres_user = ''
     postgres_pass = ''
-    postgres_url = 'jdbc:postgresql://localhost/postgres'
+    postgres_url = ''
 
     ingestion_postgres(path_txt, path_parquet, path_csv, path_json, postgres_user, postgres_pass, postgres_url)
